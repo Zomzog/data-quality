@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -56,7 +57,7 @@ import org.xml.sax.SAXException;
  */
 public class ReleaseVersionBumper {
 
-    private static final String TARGET_VERSION = "5.0.0-SNAPSHOT";
+    private static String TARGET_VERSION = "";
 
     private static final String DATAQUALITY_PREFIX = "dataquality.";
 
@@ -72,7 +73,13 @@ public class ReleaseVersionBumper {
 
     private String microVersion;
 
-    private ReleaseVersionBumper() throws TransformerConfigurationException, TransformerFactoryConfigurationError {
+    private ReleaseVersionBumper() throws TransformerConfigurationException, TransformerFactoryConfigurationError, IOException {
+
+        Properties prop = new Properties();
+        prop.load(this.getClass().getClassLoader().getResourceAsStream("dataquality-libraries.properties"));
+
+        TARGET_VERSION = prop.getProperty("target.version");
+
         xTransformer = TransformerFactory.newInstance().newTransformer();
         xTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
         xTransformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
