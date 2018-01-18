@@ -189,8 +189,13 @@ public class MFBRecordMerger implements IRecordMerger {
             String mergedValue, AttributeValues<String> mergedValues) {
         BigDecimal leftNumberValue;
         BigDecimal rightNumberValue;
-        int leftValueLength = leftValue == null ? 0 : leftValue.length();
-        int rightValueLength = rightValue == null ? 0 : rightValue.length();
+        if (leftValue == null) {
+            return rightValue;
+        } else if (rightValue == null) {
+            return leftValue;
+        }
+        int leftValueLength = leftValue.length();
+        int rightValueLength = rightValue.length();
         switch (survivorShipAlgorithmEnum) {
         case CONCATENATE:
             if (StringUtils.isEmpty(parameter)) {
