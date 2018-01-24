@@ -19,10 +19,11 @@ import org.talend.dataquality.datamasking.functions.DateVariance;
 import org.talend.dataquality.datamasking.functions.Function;
 import org.talend.dataquality.datamasking.semantic.DateFunctionAdapter;
 import org.talend.dataquality.datamasking.semantic.FluctuateNumericString;
+import org.talend.dataquality.datamasking.semantic.GenerateFromRegex;
 import org.talend.dataquality.datamasking.semantic.ReplaceCharactersWithGeneration;
 import org.talend.dataquality.semantic.api.CategoryRegistryManager;
+import org.talend.dataquality.semantic.classifier.custom.UserDefinedClassifier;
 import org.talend.dataquality.semantic.model.CategoryType;
-import org.talend.dataquality.semantic.model.DQCategory;
 
 public class SemanticMaskerFunctionFactory {
 
@@ -53,11 +54,21 @@ public class SemanticMaskerFunctionFactory {
             }
         }
 
-        if (function == null && "string".equals(dataType)) {
-            DQCategory category = CategoryRegistryManager.getInstance().getCategoryMetadataByName(semanticCategory);
-            if (category != null && CategoryType.DICT.equals(category.getType())) {
-                function = new GenerateFromDictionaries();
-                function.parse(semanticCategory, true, null);
+        if (function == null) {
+            org.talend.dataquality.semantic.model.DQCategory category = CategoryRegistryManager.getInstance()
+                    .getCategoryMetadataByName(semanticCategory);
+            if (category != null) {
+                if (CategoryType.DICT.equals(category.getType())) {
+                    function = new GenerateFromDictionaries();
+                    function.parse(semanticCategory, true, null);
+                } else if (CategoryType.REGEX.equals(category.getType())) {
+                    UserDefinedClassifier userDefinedClassifier = new UserDefinedClassifier();
+                    String patternString = userDefinedClassifier.getPatternStringByCategoryId(category.getId());
+                    if (GenerateFromRegex.isValidPattern(patternString)) {
+                        function = new GenerateFromRegex();
+                        function.parse(patternString, true, null);
+                    }
+                }
             }
         }
 
