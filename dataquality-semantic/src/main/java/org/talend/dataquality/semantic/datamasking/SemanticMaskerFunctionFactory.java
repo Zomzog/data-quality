@@ -54,21 +54,21 @@ public class SemanticMaskerFunctionFactory {
             }
         }
 
-        org.talend.dataquality.semantic.model.DQCategory category = CategoryRegistryManager.getInstance()
-                .getCategoryMetadataByName(semanticCategory);
-        if (function == null && "string".equals(dataType)) {
-            if (category != null && CategoryType.DICT.equals(category.getType())) {
-                function = new GenerateFromDictionaries();
-                function.parse(semanticCategory, true, null);
-            }
-        }
-
-        if (category != null && CategoryType.REGEX.equals(category.getType())) {
-            UserDefinedClassifier userDefinedClassifier = new UserDefinedClassifier();
-            String patternString = userDefinedClassifier.getPatternStringByCategoryId(category.getId());
-            if (GenerateFromRegex.isValidPattern(patternString)) {
-                function = new GenerateFromRegex();
-                function.parse(patternString, true, null);
+        if (function == null) {
+            org.talend.dataquality.semantic.model.DQCategory category = CategoryRegistryManager.getInstance()
+                    .getCategoryMetadataByName(semanticCategory);
+            if (category != null) {
+                if (CategoryType.DICT.equals(category.getType())) {
+                    function = new GenerateFromDictionaries();
+                    function.parse(semanticCategory, true, null);
+                } else if (CategoryType.REGEX.equals(category.getType())) {
+                    UserDefinedClassifier userDefinedClassifier = new UserDefinedClassifier();
+                    String patternString = userDefinedClassifier.getPatternStringByCategoryId(category.getId());
+                    if (GenerateFromRegex.isValidPattern(patternString)) {
+                        function = new GenerateFromRegex();
+                        function.parse(patternString, true, null);
+                    }
+                }
             }
         }
 

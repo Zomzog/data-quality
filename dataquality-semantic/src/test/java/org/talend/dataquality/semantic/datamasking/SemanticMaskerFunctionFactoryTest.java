@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.dataquality.semantic.datamasking;
 
+import java.util.Random;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.talend.dataquality.datamasking.functions.Function;
@@ -24,7 +26,7 @@ public class SemanticMaskerFunctionFactoryTest {
 
     /**
      * Test method for
-     * {@link org.talend.dataquality.datamasking.semantic.SemanticMaskerFunctionFactory#createMaskerFunctionForSemanticCategory(java.lang.String, java.lang.String, java.util.List)}
+     * {@link org.talend.dataquality.semantic.datamasking.SemanticMaskerFunctionFactory#createMaskerFunctionForSemanticCategory(java.lang.String, java.lang.String, java.util.List)}
      * .
      */
     @Test
@@ -32,10 +34,11 @@ public class SemanticMaskerFunctionFactoryTest {
         // normal case
         Function<String> generateFromRegexFunction = SemanticMaskerFunctionFactory
                 .createMaskerFunctionForSemanticCategory("FR_POSTAL_CODE", "integer", null); //$NON-NLS-1$ //$NON-NLS-2$
+        generateFromRegexFunction.setRandom(new Random(100L));
         Assert.assertTrue("The Function should be instance of GenerateFromRegex class", //$NON-NLS-1$
                 generateFromRegexFunction instanceof GenerateFromRegex);
         String generateMaskedRow = generateFromRegexFunction.generateMaskedRow("any input string"); //$NON-NLS-1$
-        Assert.assertEquals("The mask result should be 02175", "02175", generateMaskedRow); //$NON-NLS-1$//$NON-NLS-2$
+        Assert.assertEquals("The mask result should be 02779", "02779", generateMaskedRow); //$NON-NLS-1$//$NON-NLS-2$
 
         // when input data from name change to id
 

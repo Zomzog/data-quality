@@ -79,19 +79,19 @@ public class ValueDataMaskerTest extends CategoryRegistryManagerAbstract {
             put(new String[] { "(301) 231-9473 x 2364", MaskableCategoryEnum.US_PHONE.name(), "string" },
                     "(301) 231-9452 x 1404");
             put(new String[] { "(563) 557-7600 Ext. 2890", MaskableCategoryEnum.US_PHONE.name(), "string" },
-                    "(251) 516-5500 Aqa. 7033");
+                    "(563) 557-7618 Ext. 3290");
 
             // 5. JOB_TITLE
             put(new String[] { "CEO", SemanticCategoryEnum.JOB_TITLE.name(), "string" }, "Aviation Inspector");
 
             // 6. ADDRESS_LINE
-            put(new String[] { "9 Rue Pagès", MaskableCategoryEnum.ADDRESS_LINE.name(), "string" }, "3 Kfz Zpsbb");
+            put(new String[] { "9 Rue Pagès", MaskableCategoryEnum.ADDRESS_LINE.name(), "string" }, "6 Rue XXXXX");
 
             // 7 POSTAL_CODE
-            put(new String[] { "37218-1324", MaskableCategoryEnum.US_POSTAL_CODE.name(), "string" }, "82660");
-            put(new String[] { "92150", MaskableCategoryEnum.FR_POSTAL_CODE.name(), "string" }, "82660");
-            put(new String[] { "63274", MaskableCategoryEnum.DE_POSTAL_CODE.name(), "string" }, "32515");
-            put(new String[] { "AT1 3BW", MaskableCategoryEnum.UK_POSTAL_CODE.name(), "string" }, "W2f   4ZU");
+            put(new String[] { "37218-1324", SemanticCategoryEnum.US_POSTAL_CODE.name(), "string" }, "82660");
+            put(new String[] { "92150", SemanticCategoryEnum.FR_POSTAL_CODE.name(), "string" }, "82660");
+            put(new String[] { "63274", SemanticCategoryEnum.DE_POSTAL_CODE.name(), "string" }, "32515");
+            put(new String[] { "AT1 3BW", SemanticCategoryEnum.UK_POSTAL_CODE.name(), "string" }, "W2f   4ZU");
 
             // 8 ORGANIZATION
 
