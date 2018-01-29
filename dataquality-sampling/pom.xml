@@ -83,6 +83,20 @@
 			<version>7.3.0</version>
 			<scope>test</scope>
 		</dependency>
+		 <!--used by GenerateFromRegex-->
+        <dependency>
+            <groupId>com.github.mifmif</groupId>
+            <artifactId>generex</artifactId>
+            <version>1.0.2</version>
+         </dependency>
+        
+         <!-- https://mvnrepository.com/artifact/dk.brics.automaton/automaton -->
+         <dependency>
+            <groupId>dk.brics.automaton</groupId>
+            <artifactId>automaton</artifactId>
+            <version>1.11-8</version>
+         </dependency>
+         <!--used by GenerateFromRegex-->
 	</dependencies>
 
 </project>
