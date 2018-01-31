@@ -12,8 +12,8 @@
 // ============================================================================
 package org.talend.dataquality.semantic.datamasking;
 
-import static org.junit.Assert.assertEquals;
-import static org.talend.dataquality.semantic.TestUtils.mockWithTenant;
+import static org.junit.Assert.*;
+import static org.talend.dataquality.semantic.TestUtils.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,12 +72,13 @@ public class ValueDataMaskerTest extends CategoryRegistryManagerAbstract {
             put(new String[] { "3333456789", MaskableCategoryEnum.US_PHONE.name(), "string" }, "3333818829");
             // if we put two 1 at the fifth and sixth position, it's not a US valid number, so we replace all the digit
             put(new String[] { "3333116789", MaskableCategoryEnum.US_PHONE.name(), "string" }, "2515165500");
-            put(new String[] { "321938", MaskableCategoryEnum.FR_PHONE.name(), "string" }, "251516");
+            put(new String[] { "321938", MaskableCategoryEnum.FR_PHONE.name(), "string" }, "251516");// regex invalid
+            put(new String[] { "0212345678", MaskableCategoryEnum.FR_PHONE.name(), "string" }, "0212157114");// regex but no new
+                                                                                                             // function
             put(new String[] { "++044dso44aa", MaskableCategoryEnum.DE_PHONE.name(), "string" }, "++251zps55qg");
             put(new String[] { "666666666", MaskableCategoryEnum.UK_PHONE.name(), "string" }, "251516550");
             put(new String[] { "777777777abc", MaskableCategoryEnum.UK_PHONE.name(), "string" }, "251516550gaq");
-            put(new String[] { "(301) 231-9473 x 2364", MaskableCategoryEnum.US_PHONE.name(), "string" },
-                    "(301) 231-9452 x 1404");
+            put(new String[] { "(301) 231-9473 x 2364", MaskableCategoryEnum.US_PHONE.name(), "string" }, "(301) 231-9452 x 1404");
             put(new String[] { "(563) 557-7600 Ext. 2890", MaskableCategoryEnum.US_PHONE.name(), "string" },
                     "(251) 516-5500 Aqa. 7033");
 
@@ -88,10 +89,12 @@ public class ValueDataMaskerTest extends CategoryRegistryManagerAbstract {
             put(new String[] { "9 Rue Pagès", MaskableCategoryEnum.ADDRESS_LINE.name(), "string" }, "3 Kfz Zpsbb");
 
             // 7 POSTAL_CODE
-            put(new String[] { "37218-1324", MaskableCategoryEnum.US_POSTAL_CODE.name(), "string" }, "32515-1655");
-            put(new String[] { "92150", MaskableCategoryEnum.FR_POSTAL_CODE.name(), "string" }, "32515");
-            put(new String[] { "63274", MaskableCategoryEnum.DE_POSTAL_CODE.name(), "string" }, "32515");
-            put(new String[] { "AT1 3BW", MaskableCategoryEnum.UK_POSTAL_CODE.name(), "string" }, "VK5 1ZP");
+            put(new String[] { "37218-1324", SemanticCategoryEnum.US_POSTAL_CODE.name(), "string" }, "82660");// real regex
+            // function
+            put(new String[] { "92150", SemanticCategoryEnum.FR_POSTAL_CODE.name(), "string" }, "82660");// real regex
+            put(new String[] { "63274", SemanticCategoryEnum.DE_POSTAL_CODE.name(), "string" }, "32515");// regex but no new
+            // function
+            put(new String[] { "AT1 3BW", SemanticCategoryEnum.UK_POSTAL_CODE.name(), "string" }, "W2f   4ZU");// real regex
 
             // 8 ORGANIZATION
 
@@ -148,6 +151,7 @@ public class ValueDataMaskerTest extends CategoryRegistryManagerAbstract {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
+    @Test
     public void testProcess() throws InstantiationException, IllegalAccessException {
 
         for (String[] input : EXPECTED_MASKED_VALUES.keySet()) {
